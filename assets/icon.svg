@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Open Kitten</title>
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="#315bdb"/>
+  <path d="M136 252V132l88 56h64l88-56v120c0 79-51 128-120 144-69-16-120-65-120-144Z" fill="#fff"/>
+  <path d="m184 256 40 16m104-16-40 16" fill="none" stroke="#315bdb" stroke-width="18" stroke-linecap="round"/>
+  <path d="m244 312 12 12 12-12" fill="none" stroke="#315bdb" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

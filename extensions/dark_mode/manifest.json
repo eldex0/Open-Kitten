@@ -1,0 +1,7 @@
+{
+  "name": "Dark Mode",
+  "version": "2.0.0",
+  "description": "Thème sombre sans inversion des images, palette neutre ou chaude, respect du thème natif et exceptions par site.",
+  "enabled_by_default": false,
+  "script": "script.js"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Ad Blocker",
+  "version": "2.0.0",
+  "description": "Filtrage réseau et masquage ciblé des emplacements publicitaires. Exceptions par site dans les paramètres.",
+  "script": "script.js",
+  "enabled_by_default": false,
+  "blocked_hosts": [
+    "doubleclick.net",
+    "googlesyndication.com",
+    "googleadservices.com",
+    "adnxs.com",
+    "taboola.com",
+    "outbrain.com"
+  ]
+}

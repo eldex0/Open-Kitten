@@ -1,0 +1,16 @@
+{
+  "name": "Privacy Guard",
+  "version": "2.0.0",
+  "description": "Filtrage des domaines de suivi, retrait des pings de liens et protection des liens externes. Exceptions par site.",
+  "script": "script.js",
+  "enabled_by_default": false,
+  "blocked_hosts": [
+    "google-analytics.com",
+    "googletagmanager.com",
+    "facebook.net",
+    "connect.facebook.net",
+    "hotjar.com",
+    "mixpanel.com",
+    "segment.io"
+  ]
+}

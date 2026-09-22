@@ -95,7 +95,3 @@ Open Kitten's original source code is distributed under the
 [GNU General Public License v3.0 or later](LICENSE). Qt, PyQt6, QtWebEngine,
 Chromium, Python, and other third-party components remain under their own
 licenses. See the relevant upstream project for each dependency's terms.
-
-## links to download the installer
-
-https://drive.google.com/drive/folders/1v1J0Ac4tD6M2ZpApMFKn0UlM9dINu0Q1?usp=sharing

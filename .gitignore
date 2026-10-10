@@ -1,0 +1,35 @@
+# User profiles, cookies, cache and local settings
+data/
+local-backups/
+
+# Native build and release products
+build/
+dist/
+release/
+native/rust/security_core/target/
+
+# TypeScript dependencies and generated output
+native/webui/node_modules/
+native/webui/dist/
+third_party/*.nupkg
+
+# Local logs and editor state
+*.log
+.vscode/
+.idea/
+
+# Visual Studio and local CMake state
+.vs/
+CMakeUserPresets.json
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+
+# Operating system and temporary files
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.tmp
+*.bak
+*.swp

@@ -1,0 +1,63 @@
+name: Native Windows quality gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-package:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '11'
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.3'
+          cache: true
+
+      - name: Check TypeScript WebUI
+        working-directory: native/webui
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run check
+          pnpm run build
+
+      - name: Test Rust security core
+        run: cargo test --manifest-path native/rust/security_core/Cargo.toml --locked
+
+      - name: Configure native browser
+        run: cmake -S . -B build/native -G "Visual Studio 17 2022" -A x64
+      - name: Build native browser
+        run: cmake --build build/native --config Release
+      - name: Test native engine
+        run: ctest --test-dir build/native --build-config Release --output-on-failure
+      - name: Install portable package
+        run: cmake --install build/native --config Release --prefix "$env:GITHUB_WORKSPACE/dist/OpenKitten"
+      - name: Test packaged application, Chromium and private mode
+        shell: pwsh
+        run: |
+          foreach ($mode in @('--self-test', '--ui-smoke-test', '--private-smoke-test')) {
+            $process = Start-Process -FilePath "$env:GITHUB_WORKSPACE/dist/OpenKitten/OpenKitten.exe" -ArgumentList $mode -WindowStyle Hidden -Wait -PassThru
+            if ($process.ExitCode -ne 0) { throw "$mode failed with exit code $($process.ExitCode)" }
+          }
+      - name: Build Windows installer
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path release -Force | Out-Null
+          Compress-Archive -Path dist/OpenKitten/* -DestinationPath release/OpenKitten-2.0.0-portable.zip -CompressionLevel Optimal -Force
+          choco install innosetup --no-progress -y
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" packaging\installer.iss
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OpenKitten-2.0.0-Windows
+          path: |
+            dist/OpenKitten
+            release/OpenKitten-2.0.0-portable.zip
+            release/OpenKitten-2.0.0-setup.exe

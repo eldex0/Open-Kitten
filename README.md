@@ -1,97 +1,83 @@
-# Open Kitten
+# Open Kitten 2.0
 
-**Open Kitten 1.0.0** is a small, open-source desktop web browser for Windows.
-It is an experimental project made for fun and learning, developed with Python,
-PyQt6, QtWebEngine, and the help of AI.
+Open Kitten is a native Windows browser built with the same primary language
+families used by Brave: C++ for the browser and rendering engine, Rust for
+security-sensitive URL filtering, and TypeScript for internal WebUI sources.
+Python and PyQt are not part of the application or build.
 
-> Open Kitten is not intended to replace mature production browsers yet. Use it
-> as an experimental project and report anything that can be improved (for a more serious version.).
+## Kitten Engine 2.0
 
-Copyright (C) 2026 eldex0. Open Kitten is released under the
-[GNU GPL v3.0-or-later](LICENSE).
+Kitten Engine 2.0 combines two C++ rendering paths. Modern websites use the
+installed Microsoft Edge WebView2 Chromium runtime, providing current HTML,
+CSS, JavaScript, WebAssembly, media, forms, cookies and Web storage. Kitten Safe
+View remains an independent text-first renderer for restricted reading without
+remote scripts. Rust supplies URL cleanup and tracking-host protection.
 
-## Highlights
+The browser includes tabs, Chromium history, session restore, bookmarks,
+private windows, downloads, printing, find-in-page, developer tools, zoom,
+full screen, reopening closed tabs, connection status and French/English UI.
+Profiles isolate Chromium storage and Open Kitten preferences. The browser also
+supports searchable profile history, pinned and grouped tabs, importing browser
+bookmarks, installing local unpacked Chromium extensions, WebView2 password
+autofill controls, strict tracking prevention and a portable profile export for
+moving non-secret data between devices.
+Its site-protection panel reports blocked resources and provides direct access
+to the isolated Safe View. DuckDuckGo, Brave Search and Qwant can be selected
+as the persistent address-bar search provider.
+Its compact dark shell places the tab strip above a unified address bar, adds a
+bookmark bar, a downloads control and a privacy-dashboard new-tab page. Links that
+request a new window open in a new tab, sensitive site permissions require an
+explicit decision, and the tab context menu supports reload, duplicate and
+bulk close actions.
 
-- Tabbed browsing with a combined address and search bar
-- Multiple search engines, including Google, Bing, DuckDuckGo, Brave Search,
-  Ecosia, Qwant, and Startpage
-- Private browsing windows and separate browser profiles
-- Bookmarks, history, downloads, zoom controls, and keyboard shortcuts
-- Light, dark, and system appearance modes
-- Automatic interface language detection with several language options
-- Built-in extension support and three optional privacy-oriented extensions
-- A customizable interface inspired by privacy-focused browsers
-- Windows packaging support with PyInstaller and Inno Setup
+The interface can be switched between French, English, Spanish, German,
+Italian, Portuguese, Dutch, Polish, Japanese and Simplified Chinese. The
+settings also provide a persistent rendering choice between Kitten Engine for
+full Chromium compatibility and the restricted Kitten Safe View.
 
-## Project status
+Kitten Safe View remains deliberately limited. The normal rendering path is
+Chromium-compatible, but Brave-specific hosted services are separate products.
+The exact gap is documented in `docs/BRAVE_PARITY.md`.
 
-Open Kitten is actively experimental. The codebase is evolving and some browser
-features depend on the QtWebEngine version and the codecs available on the host
-system. DRM, proprietary media codecs, automatic updates, and Chrome Web Store
-compatibility are not guaranteed.
+## Build on Windows
 
-The built-in extensions use Open Kitten's extension format. They are not a full
-implementation of Chrome or Firefox extension APIs.
+Required tools:
 
-## Run from source
+- CMake 3.24 or newer (Ninja or Visual Studio 2022 generator)
+- a C++20 compiler (MSVC or Clang)
+- Qt 6.6 or newer: Core, Gui, Network and Widgets
+- stable Rust with Cargo
+- Node.js 20 or newer with npm or pnpm
+- Inno Setup 6 for the Windows installer
+- Microsoft Edge WebView2 Runtime (evergreen)
 
-Python 3.10 or newer is recommended on Windows.
-
-```powershell
-git clone https://github.com/eldex0/open-kitten.git
-cd open-kitten
-python -m venv .venv
-.\\.venv\\Scripts\\Activate.ps1
-python -m pip install -r requirements.txt
-python main.py
-```
-
-If PowerShell blocks activation, run the project with the Python executable
-inside `.venv` directly or adjust the local PowerShell execution policy.
-
-## Run the tests
-
-```powershell
-python -m unittest discover -s tests
-```
-
-## Build the Windows application
-
-Install PyInstaller and run:
+The minimal native WebView2 SDK required for compilation is retained under
+`third_party/webview2`; .NET, x86, ARM and code-generation files are excluded.
 
 ```powershell
-python -m pip install pyinstaller
-python -m PyInstaller packaging\\MiniBrowser.spec
+./packaging/build.ps1
 ```
 
-The application is generated in `dist\\OpenKitten\\OpenKitten.exe`.
+The portable application is installed into `dist/OpenKitten`; a portable ZIP
+and the Windows installer are written to `release`. The build runs the C++, Rust
+and TypeScript checks plus packaged self-tests for the Rust bridge, the normal UI
+and private mode before creating the release artifacts. The same native quality
+gates run in Windows GitHub Actions.
 
-To create the installer, install Inno Setup 6 and compile
-`packaging\\installer.iss` with the Inno Setup compiler (`ISCC.exe`).
-
-## Repository layout
+## Source layout
 
 ```text
-core/          Application services, settings, storage, search, and i18n
-ui/            Browser windows, tabs, dialogs, and interface components
-extensions/    Built-in Open Kitten extensions
-packaging/     PyInstaller and Windows installer configuration
-tests/         Automated tests
-docs/          Project and release documentation
+native/include/       Kitten Engine public C++ interfaces
+native/src/engine/    HTML, CSS, URL and layout implementation
+native/src/browser/   Qt browser shell, tabs and Rust bridge
+native/rust/          Memory-safe privacy component
+native/webui/         Internal TypeScript WebUI sources
+native/tests/         Native engine tests
+assets/               Application icons
+packaging/            Native Windows build and installer files
 ```
-
-Do not commit personal browsing data such as cookies, history, profiles,
-extension state, logs, or local build output.
-
-## Contributing
-
-Bug reports, ideas, translations, and pull requests are welcome. Please explain
-how to reproduce a problem and include the relevant Windows, Python, PyQt6, and
-QtWebEngine versions when reporting a bug.
 
 ## License
 
-Open Kitten's original source code is distributed under the
-[GNU General Public License v3.0 or later](LICENSE). Qt, PyQt6, QtWebEngine,
-Chromium, Python, and other third-party components remain under their own
-licenses. See the relevant upstream project for each dependency's terms.
+Open Kitten source code is distributed under the GNU GPL v3.0 or later. Qt and
+other third-party components remain under their respective licenses.

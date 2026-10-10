@@ -1,0 +1,16 @@
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+Copyright (C) 2007 Free Software Foundation, Inc.
+
+Open Kitten is distributed under the GNU General Public License, version 3
+or any later version (GPL-3.0-or-later).
+
+This file is a license notice for the project. The complete license text is
+available at:
+
+https://www.gnu.org/licenses/gpl-3.0.html
+
+In source distributions, the GNU GPL v3 applies to the original Open Kitten
+source code. Qt, Rust, Node.js, and other dependencies
+remain under their own licenses.

@@ -1,3 +1,0 @@
-# Optional native Chrome Manifest V3 support; runtime capability also checked in UI.
-PyQt6>=6.10,<7
-PyQt6-WebEngine>=6.10,<7
